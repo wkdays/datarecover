@@ -21,8 +21,8 @@ PROJECT_NAME="中晋数据科技数据恢复网站"
 DOMAIN="dt.yongli.wang"
 CONTAINER_NAME="zhongjin-datarecover"
 PROXY_CONTAINER="datarecover-proxy"
-IMAGE_NAME="datarecover-web"
-PORT="8080"
+IMAGE_NAME="zhongjin-datarecover-web"  # 使用更独特的镜像名
+PORT="8080"  # 使用8080端口，避免与现有nginx冲突
 
 # 打印带颜色的消息
 print_message() {
@@ -74,8 +74,14 @@ check_existing_images() {
     
     # 检查端口占用
     if netstat -tulpn 2>/dev/null | grep -q ":80\|:443"; then
-        print_message $YELLOW "⚠️  检测到80/443端口被占用"
-        print_message $YELLOW "将使用8080端口作为备用端口"
+        print_message $YELLOW "⚠️  检测到80/443端口被占用（可能是您现有的nginx服务）"
+        print_message $YELLOW "✅ 将使用8080端口，不会影响现有服务"
+    fi
+    
+    # 检查现有nginx容器
+    if docker ps --format 'table {{.Names}}' | grep -i nginx; then
+        print_message $YELLOW "⚠️  发现现有nginx容器正在运行"
+        print_message $GREEN "✅ 将使用不同的容器名称，不会影响现有nginx服务"
     fi
 }
 

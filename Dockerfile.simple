@@ -1,13 +1,10 @@
-# 使用官方Nginx镜像作为基础镜像
+# 简化版Dockerfile - 避免用户组冲突
 FROM nginx:alpine
 
 # 设置维护者信息
 LABEL maintainer="中晋数据科技 <service@zhongjindata.com>"
 LABEL description="中晋数据科技企业级数据恢复服务网站"
 LABEL version="1.0.0"
-
-# 使用现有的nginx用户（Nginx Alpine镜像已包含）
-# 无需创建新用户，直接使用现有的nginx用户
 
 # 设置工作目录
 WORKDIR /usr/share/nginx/html
